@@ -1,4 +1,3 @@
-
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
@@ -6,27 +5,140 @@ import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious
 import { Link } from 'react-router-dom';
 import { ArrowRight, Star, Truck, Shield, Heart, Award, Users, Sparkles, Instagram } from 'lucide-react';
 
-// Mock data structures for future Supabase integration
+// Updated mock data with realistic images and slugs for navigation
 const newArrivals = [
-  { id: 1, name: "Silk Dreams Bra Set", price: 89.99, originalPrice: 119.99, rating: 4.8, reviews: 42, image: "https://via.placeholder.com/400x500/FFB6C1/FFFFFF?text=Silk+Dreams" },
-  { id: 2, name: "Midnight Velvet Collection", price: 76.99, originalPrice: null, rating: 4.9, reviews: 38, image: "https://via.placeholder.com/400x500/8B4B8B/FFFFFF?text=Midnight+Velvet" },
-  { id: 3, name: "Rose Garden Lace", price: 94.99, originalPrice: 124.99, rating: 4.7, reviews: 51, image: "https://via.placeholder.com/400x500/FFE4E1/FFFFFF?text=Rose+Garden" },
-  { id: 4, name: "Pearl Essence Set", price: 112.99, originalPrice: null, rating: 5.0, reviews: 29, image: "https://via.placeholder.com/400x500/F0F8FF/000000?text=Pearl+Essence" },
-  { id: 5, name: "Autumn Leaves Collection", price: 68.99, originalPrice: 89.99, rating: 4.6, reviews: 33, image: "https://via.placeholder.com/400x500/CD853F/FFFFFF?text=Autumn+Leaves" }
+  { 
+    id: 1, 
+    name: "Silk Dreams Bra Set", 
+    price: 89.99, 
+    originalPrice: 119.99, 
+    rating: 4.8, 
+    reviews: 42, 
+    image: "https://images.unsplash.com/photo-1594823811919-4c7825ac4d54?w=400&h=500&fit=crop",
+    slug: "silk-dreams-bra-set"
+  },
+  { 
+    id: 2, 
+    name: "Midnight Velvet Collection", 
+    price: 76.99, 
+    originalPrice: null, 
+    rating: 4.9, 
+    reviews: 38, 
+    image: "https://images.unsplash.com/photo-1571513722275-4b41940f54b8?w=400&h=500&fit=crop",
+    slug: "midnight-velvet-collection"
+  },
+  { 
+    id: 3, 
+    name: "Rose Garden Lace", 
+    price: 94.99, 
+    originalPrice: 124.99, 
+    rating: 4.7, 
+    reviews: 51, 
+    image: "https://images.unsplash.com/photo-1578662996442-48f60103fc96?w=400&h=500&fit=crop",
+    slug: "rose-garden-lace"
+  },
+  { 
+    id: 4, 
+    name: "Pearl Essence Set", 
+    price: 112.99, 
+    originalPrice: null, 
+    rating: 5.0, 
+    reviews: 29, 
+    image: "https://images.unsplash.com/photo-1590736969955-71cc94901144?w=400&h=500&fit=crop",
+    slug: "pearl-essence-set"
+  },
+  { 
+    id: 5, 
+    name: "Autumn Leaves Collection", 
+    price: 68.99, 
+    originalPrice: 89.99, 
+    rating: 4.6, 
+    reviews: 33, 
+    image: "https://images.unsplash.com/photo-1566479179817-3e0a0f59fe47?w=400&h=500&fit=crop",
+    slug: "autumn-leaves-collection"
+  }
 ];
 
 const bestSellers = [
-  { id: 6, name: "Classic Comfort Bra", price: 45.99, originalPrice: null, rating: 4.9, reviews: 156, sales: 1250, image: "https://via.placeholder.com/400x500/F5F5DC/000000?text=Classic+Comfort" },
-  { id: 7, name: "Everyday Elegance Set", price: 59.99, originalPrice: 79.99, rating: 4.8, reviews: 203, sales: 980, image: "https://via.placeholder.com/400x500/E6E6FA/000000?text=Everyday+Elegance" },
-  { id: 8, name: "Luxe Lace Bodysuit", price: 82.99, originalPrice: null, rating: 4.7, reviews: 127, sales: 875, image: "https://via.placeholder.com/400x500/DDA0DD/FFFFFF?text=Luxe+Lace" },
-  { id: 9, name: "Seamless Comfort", price: 38.99, originalPrice: 49.99, rating: 4.9, reviews: 298, sales: 1450, image: "https://via.placeholder.com/400x500/F0E68C/000000?text=Seamless+Comfort" }
+  { 
+    id: 6, 
+    name: "Classic Comfort Bra", 
+    price: 45.99, 
+    originalPrice: null, 
+    rating: 4.9, 
+    reviews: 156, 
+    sales: 1250, 
+    image: "https://images.unsplash.com/photo-1594823812515-7b62bb35f7ab?w=400&h=500&fit=crop",
+    slug: "classic-comfort-bra"
+  },
+  { 
+    id: 7, 
+    name: "Everyday Elegance Set", 
+    price: 59.99, 
+    originalPrice: 79.99, 
+    rating: 4.8, 
+    reviews: 203, 
+    sales: 980, 
+    image: "https://images.unsplash.com/photo-1584464491033-06628f3a6b7b?w=400&h=500&fit=crop",
+    slug: "everyday-elegance-set"
+  },
+  { 
+    id: 8, 
+    name: "Luxe Lace Bodysuit", 
+    price: 82.99, 
+    originalPrice: null, 
+    rating: 4.7, 
+    reviews: 127, 
+    sales: 875, 
+    image: "https://images.unsplash.com/photo-1583748290793-c1ba6dab2e4a?w=400&h=500&fit=crop",
+    slug: "luxe-lace-bodysuit"
+  },
+  { 
+    id: 9, 
+    name: "Seamless Comfort", 
+    price: 38.99, 
+    originalPrice: 49.99, 
+    rating: 4.9, 
+    reviews: 298, 
+    sales: 1450, 
+    image: "https://images.unsplash.com/photo-1566479275475-8186ae0a53a3?w=400&h=500&fit=crop",
+    slug: "seamless-comfort"
+  }
 ];
 
 const collections = [
-  { id: 1, name: "Bridal Collection", description: "Pure elegance for your special day", image: "https://via.placeholder.com/600x400/FFF8DC/000000?text=Bridal+Collection", items: 24 },
-  { id: 2, name: "Everyday Comfort", description: "Designed for daily confidence", image: "https://via.placeholder.com/600x400/F0F8FF/000000?text=Everyday+Comfort", items: 18 },
-  { id: 3, name: "Luxury Lace", description: "Intricate details, premium materials", image: "https://via.placeholder.com/600x400/E6E6FA/000000?text=Luxury+Lace", items: 15 },
-  { id: 4, name: "Active & Sport", description: "Support that moves with you", image: "https://via.placeholder.com/600x400/FFE4E1/000000?text=Active+Sport", items: 12 }
+  { 
+    id: 1, 
+    name: "Bridal Collection", 
+    description: "Pure elegance for your special day", 
+    image: "https://images.unsplash.com/photo-1594823811919-4c7825ac4d54?w=600&h=400&fit=crop", 
+    items: 24,
+    link: "/shop?collection=bridal"
+  },
+  { 
+    id: 2, 
+    name: "Everyday Comfort", 
+    description: "Designed for daily confidence", 
+    image: "https://images.unsplash.com/photo-1566479179817-3e0a0f59fe47?w=600&h=400&fit=crop", 
+    items: 18,
+    link: "/shop?collection=everyday"
+  },
+  { 
+    id: 3, 
+    name: "Luxury Lace", 
+    description: "Intricate details, premium materials", 
+    image: "https://images.unsplash.com/photo-1578662996442-48f60103fc96?w=600&h=400&fit=crop", 
+    items: 15,
+    link: "/shop?collection=luxury"
+  },
+  { 
+    id: 4, 
+    name: "Active & Sport", 
+    description: "Support that moves with you", 
+    image: "https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?w=600&h=400&fit=crop", 
+    items: 12,
+    link: "/shop?collection=active"
+  }
 ];
 
 const testimonials = [
@@ -70,14 +182,14 @@ export default function Home() {
                   </Link>
                 </Button>
                 <Button variant="outline" size="lg" asChild>
-                  <Link to="/categories">Browse Collections</Link>
+                  <Link to="/shop?view=collections">Browse Collections</Link>
                 </Button>
               </div>
             </div>
             <div className="relative">
               <div className="aspect-square rounded-2xl overflow-hidden">
                 <img 
-                  src="https://via.placeholder.com/600x600/FFB6C1/FFFFFF?text=Hero+Image" 
+                  src="https://images.unsplash.com/photo-1594823811919-4c7825ac4d54?w=600&h=600&fit=crop" 
                   alt="Elegant lingerie collection" 
                   className="w-full h-full object-cover"
                 />
@@ -146,36 +258,38 @@ export default function Home() {
             <CarouselContent>
               {newArrivals.map((product) => (
                 <CarouselItem key={product.id} className="md:basis-1/2 lg:basis-1/4">
-                  <Card className="group cursor-pointer hover:shadow-lg transition-shadow">
-                    <CardContent className="p-0">
-                      <div className="aspect-[4/5] rounded-t-lg overflow-hidden">
-                        <img 
-                          src={product.image} 
-                          alt={product.name}
-                          className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
-                        />
-                      </div>
-                      <div className="p-4 space-y-2">
-                        <div className="flex items-center justify-between">
-                          <Badge variant="secondary" className="text-xs">New</Badge>
-                          <div className="flex items-center gap-1">
-                            <Star className="h-3 w-3 fill-yellow-400 text-yellow-400" />
-                            <span className="text-xs text-muted-foreground">{product.rating}</span>
+                  <Link to={`/product/${product.slug}`}>
+                    <Card className="group cursor-pointer hover:shadow-lg transition-shadow">
+                      <CardContent className="p-0">
+                        <div className="aspect-[4/5] rounded-t-lg overflow-hidden">
+                          <img 
+                            src={product.image} 
+                            alt={product.name}
+                            className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                          />
+                        </div>
+                        <div className="p-4 space-y-2">
+                          <div className="flex items-center justify-between">
+                            <Badge variant="secondary" className="text-xs">New</Badge>
+                            <div className="flex items-center gap-1">
+                              <Star className="h-3 w-3 fill-yellow-400 text-yellow-400" />
+                              <span className="text-xs text-muted-foreground">{product.rating}</span>
+                            </div>
                           </div>
+                          <h3 className="font-medium">{product.name}</h3>
+                          <div className="flex items-center gap-2">
+                            <span className="font-semibold">${product.price}</span>
+                            {product.originalPrice && (
+                              <span className="text-sm text-muted-foreground line-through">
+                                ${product.originalPrice}
+                              </span>
+                            )}
+                          </div>
+                          <p className="text-xs text-muted-foreground">{product.reviews} reviews</p>
                         </div>
-                        <h3 className="font-medium">{product.name}</h3>
-                        <div className="flex items-center gap-2">
-                          <span className="font-semibold">${product.price}</span>
-                          {product.originalPrice && (
-                            <span className="text-sm text-muted-foreground line-through">
-                              ${product.originalPrice}
-                            </span>
-                          )}
-                        </div>
-                        <p className="text-xs text-muted-foreground">{product.reviews} reviews</p>
-                      </div>
-                    </CardContent>
-                  </Card>
+                      </CardContent>
+                    </Card>
+                  </Link>
                 </CarouselItem>
               ))}
             </CarouselContent>
@@ -201,38 +315,40 @@ export default function Home() {
           
           <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
             {bestSellers.map((product) => (
-              <Card key={product.id} className="group cursor-pointer hover:shadow-lg transition-shadow">
-                <CardContent className="p-0">
-                  <div className="aspect-[4/5] rounded-t-lg overflow-hidden relative">
-                    <img 
-                      src={product.image} 
-                      alt={product.name}
-                      className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
-                    />
-                    <Badge className="absolute top-2 left-2 bg-red-500">
-                      #{bestSellers.findIndex(p => p.id === product.id) + 1} Best Seller
-                    </Badge>
-                  </div>
-                  <div className="p-4 space-y-2">
-                    <div className="flex items-center gap-1">
-                      {[...Array(5)].map((_, i) => (
-                        <Star key={i} className="h-3 w-3 fill-yellow-400 text-yellow-400" />
-                      ))}
-                      <span className="text-xs text-muted-foreground ml-1">({product.reviews})</span>
+              <Link key={product.id} to={`/product/${product.slug}`}>
+                <Card className="group cursor-pointer hover:shadow-lg transition-shadow">
+                  <CardContent className="p-0">
+                    <div className="aspect-[4/5] rounded-t-lg overflow-hidden relative">
+                      <img 
+                        src={product.image} 
+                        alt={product.name}
+                        className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                      />
+                      <Badge className="absolute top-2 left-2 bg-red-500">
+                        #{bestSellers.findIndex(p => p.id === product.id) + 1} Best Seller
+                      </Badge>
                     </div>
-                    <h3 className="font-medium">{product.name}</h3>
-                    <div className="flex items-center gap-2">
-                      <span className="font-semibold">${product.price}</span>
-                      {product.originalPrice && (
-                        <span className="text-sm text-muted-foreground line-through">
-                          ${product.originalPrice}
-                        </span>
-                      )}
+                    <div className="p-4 space-y-2">
+                      <div className="flex items-center gap-1">
+                        {[...Array(5)].map((_, i) => (
+                          <Star key={i} className="h-3 w-3 fill-yellow-400 text-yellow-400" />
+                        ))}
+                        <span className="text-xs text-muted-foreground ml-1">({product.reviews})</span>
+                      </div>
+                      <h3 className="font-medium">{product.name}</h3>
+                      <div className="flex items-center gap-2">
+                        <span className="font-semibold">${product.price}</span>
+                        {product.originalPrice && (
+                          <span className="text-sm text-muted-foreground line-through">
+                            ${product.originalPrice}
+                          </span>
+                        )}
+                      </div>
+                      <p className="text-xs text-muted-foreground">{product.sales} sold this month</p>
                     </div>
-                    <p className="text-xs text-muted-foreground">{product.sales} sold this month</p>
-                  </div>
-                </CardContent>
-              </Card>
+                  </CardContent>
+                </Card>
+              </Link>
             ))}
           </div>
         </div>
@@ -278,7 +394,7 @@ export default function Home() {
             <div className="relative">
               <div className="aspect-[4/3] rounded-2xl overflow-hidden">
                 <img 
-                  src="https://via.placeholder.com/600x450/F0E68C/000000?text=Brand+Story" 
+                  src="https://images.unsplash.com/photo-1594823812515-7b62bb35f7ab?w=600&h=450&fit=crop" 
                   alt="Our brand story" 
                   className="w-full h-full object-cover"
                 />
@@ -300,25 +416,27 @@ export default function Home() {
           
           <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
             {collections.map((collection) => (
-              <Card key={collection.id} className="group cursor-pointer hover:shadow-lg transition-all duration-300">
-                <CardContent className="p-0">
-                  <div className="aspect-[3/2] rounded-t-lg overflow-hidden">
-                    <img 
-                      src={collection.image} 
-                      alt={collection.name}
-                      className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
-                    />
-                  </div>
-                  <div className="p-6 text-center space-y-2">
-                    <h3 className="font-semibold text-lg">{collection.name}</h3>
-                    <p className="text-sm text-muted-foreground">{collection.description}</p>
-                    <p className="text-xs text-muted-foreground">{collection.items} items</p>
-                    <Button variant="ghost" size="sm" className="mt-4">
-                      Explore Collection <ArrowRight className="ml-2 h-3 w-3" />
-                    </Button>
-                  </div>
-                </CardContent>
-              </Card>
+              <Link key={collection.id} to={collection.link}>
+                <Card className="group cursor-pointer hover:shadow-lg transition-all duration-300">
+                  <CardContent className="p-0">
+                    <div className="aspect-[3/2] rounded-t-lg overflow-hidden">
+                      <img 
+                        src={collection.image} 
+                        alt={collection.name}
+                        className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                      />
+                    </div>
+                    <div className="p-6 text-center space-y-2">
+                      <h3 className="font-semibold text-lg">{collection.name}</h3>
+                      <p className="text-sm text-muted-foreground">{collection.description}</p>
+                      <p className="text-xs text-muted-foreground">{collection.items} items</p>
+                      <Button variant="ghost" size="sm" className="mt-4">
+                        Explore Collection <ArrowRight className="ml-2 h-3 w-3" />
+                      </Button>
+                    </div>
+                  </CardContent>
+                </Card>
+              </Link>
             ))}
           </div>
         </div>
