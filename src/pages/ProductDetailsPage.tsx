@@ -128,15 +128,7 @@ export default function ProductDetailsPage() {
       return;
     }
 
-    addToCart({
-      id: product.id,
-      name: product.title,
-      price: product.sale_price || product.price,
-      quantity,
-      image: product.images[0],
-      size: selectedSize,
-      color: selectedColor
-    });
+    addToCart(product.id, undefined, quantity);
 
     toast({
       title: "Added to cart",
