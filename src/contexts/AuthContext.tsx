@@ -11,6 +11,8 @@ interface AuthContextType {
   signUp: (email: string, password: string, firstName?: string, lastName?: string) => Promise<{ error: any }>;
   signIn: (email: string, password: string) => Promise<{ error: any }>;
   signOut: () => Promise<void>;
+  resetPassword: (email: string) => Promise<{ error: any }>;
+  updatePassword: (password: string) => Promise<{ error: any }>;
   isAdmin: boolean;
 }
 
@@ -55,13 +57,10 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
 
   const signUp = async (email: string, password: string, firstName?: string, lastName?: string) => {
     try {
-      const redirectUrl = `${window.location.origin}/`;
-      
       const { error } = await supabase.auth.signUp({
         email,
         password,
         options: {
-          emailRedirectTo: redirectUrl,
           data: {
             first_name: firstName,
             last_name: lastName,
@@ -79,8 +78,8 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
       }
 
       toast({
-        title: "Check your email",
-        description: "We've sent you a confirmation link.",
+        title: "Account created successfully!",
+        description: "You can now sign in with your credentials.",
       });
 
       return { error: null };
@@ -150,6 +149,68 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     }
   };
 
+  const resetPassword = async (email: string) => {
+    try {
+      const { error } = await supabase.auth.resetPasswordForEmail(email, {
+        redirectTo: `${window.location.origin}/auth`,
+      });
+
+      if (error) {
+        toast({
+          title: "Reset failed",
+          description: error.message,
+          variant: "destructive",
+        });
+        return { error };
+      }
+
+      toast({
+        title: "Check your email",
+        description: "We've sent you a password reset link.",
+      });
+
+      return { error: null };
+    } catch (error: any) {
+      toast({
+        title: "Reset failed",
+        description: error.message,
+        variant: "destructive",
+      });
+      return { error };
+    }
+  };
+
+  const updatePassword = async (password: string) => {
+    try {
+      const { error } = await supabase.auth.updateUser({
+        password: password
+      });
+
+      if (error) {
+        toast({
+          title: "Password update failed",
+          description: error.message,
+          variant: "destructive",
+        });
+        return { error };
+      }
+
+      toast({
+        title: "Password updated",
+        description: "Your password has been updated successfully.",
+      });
+
+      return { error: null };
+    } catch (error: any) {
+      toast({
+        title: "Password update failed",
+        description: error.message,
+        variant: "destructive",
+      });
+      return { error };
+    }
+  };
+
   const value = {
     user,
     session,
@@ -157,6 +218,8 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     signUp,
     signIn,
     signOut,
+    resetPassword,
+    updatePassword,
     isAdmin,
   };
 
