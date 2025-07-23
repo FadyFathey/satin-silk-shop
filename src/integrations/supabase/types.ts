@@ -758,6 +758,45 @@ export type Database = {
           },
         ]
       }
+      site_content: {
+        Row: {
+          admin_title: string
+          content_data: Json
+          content_schema: Json
+          created_at: string
+          id: string
+          is_active: boolean
+          page: string
+          section_key: string
+          sort_order: number
+          updated_at: string
+        }
+        Insert: {
+          admin_title: string
+          content_data?: Json
+          content_schema?: Json
+          created_at?: string
+          id?: string
+          is_active?: boolean
+          page: string
+          section_key: string
+          sort_order?: number
+          updated_at?: string
+        }
+        Update: {
+          admin_title?: string
+          content_data?: Json
+          content_schema?: Json
+          created_at?: string
+          id?: string
+          is_active?: boolean
+          page?: string
+          section_key?: string
+          sort_order?: number
+          updated_at?: string
+        }
+        Relationships: []
+      }
       site_sections: {
         Row: {
           content: Json

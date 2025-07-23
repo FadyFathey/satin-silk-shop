@@ -4,11 +4,8 @@ import { Badge } from '@/components/ui/badge';
 import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from '@/components/ui/carousel';
 import { Link } from 'react-router-dom';
 import { ArrowRight, Star, Truck, Shield, Heart, Award, Users, Sparkles, Instagram } from 'lucide-react';
-import { useSiteContent } from '@/contexts/SiteContentContext';
-import { Loader2 } from 'lucide-react';
-import { Input } from '@/components/ui/input';
 
-// Backup static data for non-CMS sections (products will come from products table later)
+// Updated mock data with realistic images and slugs for navigation
 const newArrivals = [
   { 
     id: 1, 
@@ -49,6 +46,16 @@ const newArrivals = [
     reviews: 29, 
     image: "https://images.unsplash.com/photo-1590736969955-71cc94901144?w=400&h=500&fit=crop",
     slug: "pearl-essence-set"
+  },
+  { 
+    id: 5, 
+    name: "Autumn Leaves Collection", 
+    price: 68.99, 
+    originalPrice: 89.99, 
+    rating: 4.6, 
+    reviews: 33, 
+    image: "https://images.unsplash.com/photo-1566479179817-3e0a0f59fe47?w=400&h=500&fit=crop",
+    slug: "autumn-leaves-collection"
   }
 ];
 
@@ -141,59 +148,19 @@ const testimonials = [
   { id: 4, name: "Maria K.", rating: 5, review: "Finally found lingerie that combines style and comfort perfectly. Highly recommend!", location: "Florida", verified: true }
 ];
 
-// Helper function to get icon component by name
-const getIconComponent = (iconName: string) => {
-  const icons: Record<string, any> = {
-    Truck,
-    Shield,
-    Heart,
-    Award,
-    Users,
-    Sparkles,
-    Instagram,
-    RotateCcw: Heart // fallback for RotateCcw since it's not imported
-  };
-  return icons[iconName] || Truck;
-};
+const socialImages = [
+  "https://via.placeholder.com/200x200/FFB6C1/FFFFFF?text=Insta+1",
+  "https://via.placeholder.com/200x200/DDA0DD/FFFFFF?text=Insta+2",
+  "https://via.placeholder.com/200x200/E6E6FA/000000?text=Insta+3",
+  "https://via.placeholder.com/200x200/F0E68C/000000?text=Insta+4",
+  "https://via.placeholder.com/200x200/FFE4E1/000000?text=Insta+5",
+  "https://via.placeholder.com/200x200/F5F5DC/000000?text=Insta+6"
+];
 
 export default function Home() {
-  const { content, isLoading, error } = useSiteContent();
-
-  if (isLoading) {
-    return (
-      <div className="min-h-screen flex items-center justify-center">
-        <div className="flex items-center space-x-2">
-          <Loader2 className="h-6 w-6 animate-spin" />
-          <span>Loading content...</span>
-        </div>
-      </div>
-    );
-  }
-
-  if (error) {
-    return (
-      <div className="min-h-screen flex items-center justify-center">
-        <div className="text-center space-y-4">
-          <h2 className="text-2xl font-bold text-destructive">Content Loading Error</h2>
-          <p className="text-muted-foreground">{error}</p>
-          <Button onClick={() => window.location.reload()}>
-            Try Again
-          </Button>
-        </div>
-      </div>
-    );
-  }
-
-  // Get content sections
-  const homeContent = content.home || {};
-  const heroBanner = homeContent.hero_banner || {};
-  const featuresSection = homeContent.features_section || {};
-  const brandStory = homeContent.brand_story || {};
-  const newsletterSignup = homeContent.newsletter_signup || {};
-
   return (
     <div className="min-h-screen">
-      {/* Hero Section - Dynamic */}
+      {/* Hero Section */}
       <section className="relative bg-gradient-to-br from-pink-50 to-purple-50 dark:from-pink-900/20 dark:to-purple-900/20">
         <div className="container mx-auto px-4 py-20">
           <div className="grid lg:grid-cols-2 gap-12 items-center">
@@ -202,16 +169,16 @@ export default function Home() {
                 New Collection Available
               </Badge>
               <h1 className="text-4xl md:text-6xl font-bold leading-tight">
-                {heroBanner.title || 'Elegant Lingerie'}
+                Elegant Lingerie
                 <span className="text-primary block">for Every Woman</span>
               </h1>
               <p className="text-lg text-muted-foreground max-w-md">
-                {heroBanner.subtitle || 'Discover our carefully curated collection of premium lingerie, crafted with the finest materials and designed for comfort and confidence.'}
+                Discover our carefully curated collection of premium lingerie, crafted with the finest materials and designed for comfort and confidence.
               </p>
               <div className="flex gap-4">
                 <Button size="lg" asChild>
-                  <Link to={heroBanner.ctaButton?.link || "/shop"}>
-                    {heroBanner.ctaButton?.text || 'Shop Now'} <ArrowRight className="ml-2 h-4 w-4" />
+                  <Link to="/shop">
+                    Shop Now <ArrowRight className="ml-2 h-4 w-4" />
                   </Link>
                 </Button>
                 <Button variant="outline" size="lg" asChild>
@@ -222,7 +189,7 @@ export default function Home() {
             <div className="relative">
               <div className="aspect-square rounded-2xl overflow-hidden">
                 <img 
-                  src={heroBanner.backgroundImage || "https://images.unsplash.com/photo-1594823811919-4c7825ac4d54?w=600&h=600&fit=crop"} 
+                  src="https://images.unsplash.com/photo-1594823811919-4c7825ac4d54?w=600&h=600&fit=crop" 
                   alt="Elegant lingerie collection" 
                   className="w-full h-full object-cover"
                 />
@@ -232,63 +199,43 @@ export default function Home() {
         </div>
       </section>
 
-      {/* Features Section - Dynamic */}
+      {/* Features */}
       <section className="py-16 bg-background">
         <div className="container mx-auto px-4">
           <div className="grid md:grid-cols-3 gap-8">
-            {featuresSection.features?.map((feature: any, index: number) => {
-              const IconComponent = getIconComponent(feature.icon);
-              return (
-                <Card key={index}>
-                  <CardContent className="p-6 text-center space-y-4">
-                    <div className="w-12 h-12 bg-primary/10 rounded-lg flex items-center justify-center mx-auto">
-                      <IconComponent className="h-6 w-6 text-primary" />
-                    </div>
-                    <h3 className="font-semibold">{feature.title}</h3>
-                    <p className="text-sm text-muted-foreground">
-                      {feature.description}
-                    </p>
-                  </CardContent>
-                </Card>
-              );
-            }) || (
-              // Fallback features if not in CMS
-              <>
-                <Card>
-                  <CardContent className="p-6 text-center space-y-4">
-                    <div className="w-12 h-12 bg-primary/10 rounded-lg flex items-center justify-center mx-auto">
-                      <Truck className="h-6 w-6 text-primary" />
-                    </div>
-                    <h3 className="font-semibold">Free Shipping</h3>
-                    <p className="text-sm text-muted-foreground">
-                      Free shipping on orders over $75
-                    </p>
-                  </CardContent>
-                </Card>
-                <Card>
-                  <CardContent className="p-6 text-center space-y-4">
-                    <div className="w-12 h-12 bg-primary/10 rounded-lg flex items-center justify-center mx-auto">
-                      <Shield className="h-6 w-6 text-primary" />
-                    </div>
-                    <h3 className="font-semibold">Secure Payment</h3>
-                    <p className="text-sm text-muted-foreground">
-                      Your payment information is secure
-                    </p>
-                  </CardContent>
-                </Card>
-                <Card>
-                  <CardContent className="p-6 text-center space-y-4">
-                    <div className="w-12 h-12 bg-primary/10 rounded-lg flex items-center justify-center mx-auto">
-                      <Heart className="h-6 w-6 text-primary" />
-                    </div>
-                    <h3 className="font-semibold">Easy Returns</h3>
-                    <p className="text-sm text-muted-foreground">
-                      30-day return policy for all items
-                    </p>
-                  </CardContent>
-                </Card>
-              </>
-            )}
+            <Card>
+              <CardContent className="p-6 text-center space-y-4">
+                <div className="w-12 h-12 bg-primary/10 rounded-lg flex items-center justify-center mx-auto">
+                  <Truck className="h-6 w-6 text-primary" />
+                </div>
+                <h3 className="font-semibold">Free Shipping</h3>
+                <p className="text-sm text-muted-foreground">
+                  Free shipping on orders over $75
+                </p>
+              </CardContent>
+            </Card>
+            <Card>
+              <CardContent className="p-6 text-center space-y-4">
+                <div className="w-12 h-12 bg-primary/10 rounded-lg flex items-center justify-center mx-auto">
+                  <Shield className="h-6 w-6 text-primary" />
+                </div>
+                <h3 className="font-semibold">Secure Payment</h3>
+                <p className="text-sm text-muted-foreground">
+                  Your payment information is secure
+                </p>
+              </CardContent>
+            </Card>
+            <Card>
+              <CardContent className="p-6 text-center space-y-4">
+                <div className="w-12 h-12 bg-primary/10 rounded-lg flex items-center justify-center mx-auto">
+                  <Heart className="h-6 w-6 text-primary" />
+                </div>
+                <h3 className="font-semibold">Easy Returns</h3>
+                <p className="text-sm text-muted-foreground">
+                  30-day return policy for all items
+                </p>
+              </CardContent>
+            </Card>
           </div>
         </div>
       </section>
@@ -407,18 +354,18 @@ export default function Home() {
         </div>
       </section>
 
-      {/* Brand Story Section - Dynamic */}
+      {/* Brand Story Section */}
       <section className="py-20 bg-gradient-to-r from-pink-50 to-purple-50 dark:from-pink-900/20 dark:to-purple-900/20">
         <div className="container mx-auto px-4">
           <div className="grid lg:grid-cols-2 gap-12 items-center">
             <div className="space-y-6">
               <Badge variant="outline" className="w-fit">Our Promise</Badge>
               <h2 className="text-3xl md:text-4xl font-bold">
-                {brandStory.title || 'Crafted with Love,'}
+                Crafted with Love,
                 <span className="text-primary block">Worn with Confidence</span>
               </h2>
               <p className="text-lg text-muted-foreground">
-                {brandStory.content || 'For over a decade, we\'ve been dedicated to creating lingerie that celebrates every woman\'s unique beauty. Our commitment to quality, comfort, and ethical sourcing ensures that every piece tells a story of empowerment.'}
+                For over a decade, we've been dedicated to creating lingerie that celebrates every woman's unique beauty. Our commitment to quality, comfort, and ethical sourcing ensures that every piece tells a story of empowerment.
               </p>
               <div className="space-y-4">
                 <div className="flex items-center gap-3">
@@ -440,16 +387,14 @@ export default function Home() {
                   <span className="text-sm">Supporting women worldwide</span>
                 </div>
               </div>
-              <Button variant="outline" size="lg" asChild>
-                <Link to={brandStory.ctaButton?.link || "/about"}>
-                  {brandStory.ctaButton?.text || 'Learn Our Story'}
-                </Link>
+              <Button variant="outline" size="lg">
+                Learn Our Story
               </Button>
             </div>
             <div className="relative">
               <div className="aspect-[4/3] rounded-2xl overflow-hidden">
                 <img 
-                  src={brandStory.image || "https://images.unsplash.com/photo-1594823812515-7b62bb35f7ab?w=600&h=450&fit=crop"} 
+                  src="https://images.unsplash.com/photo-1594823812515-7b62bb35f7ab?w=600&h=450&fit=crop" 
                   alt="Our brand story" 
                   className="w-full h-full object-cover"
                 />
@@ -472,19 +417,22 @@ export default function Home() {
           <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
             {collections.map((collection) => (
               <Link key={collection.id} to={collection.link}>
-                <Card className="group cursor-pointer hover:shadow-lg transition-shadow overflow-hidden">
+                <Card className="group cursor-pointer hover:shadow-lg transition-all duration-300">
                   <CardContent className="p-0">
-                    <div className="aspect-[4/3] overflow-hidden">
+                    <div className="aspect-[3/2] rounded-t-lg overflow-hidden">
                       <img 
                         src={collection.image} 
                         alt={collection.name}
                         className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
                       />
                     </div>
-                    <div className="p-4 space-y-2">
-                      <h3 className="font-semibold">{collection.name}</h3>
+                    <div className="p-6 text-center space-y-2">
+                      <h3 className="font-semibold text-lg">{collection.name}</h3>
                       <p className="text-sm text-muted-foreground">{collection.description}</p>
                       <p className="text-xs text-muted-foreground">{collection.items} items</p>
+                      <Button variant="ghost" size="sm" className="mt-4">
+                        Explore Collection <ArrowRight className="ml-2 h-3 w-3" />
+                      </Button>
                     </div>
                   </CardContent>
                 </Card>
@@ -498,29 +446,37 @@ export default function Home() {
       <section className="py-16 bg-muted/30">
         <div className="container mx-auto px-4">
           <div className="text-center space-y-4 mb-12">
+            <div className="flex items-center justify-center gap-2">
+              <Users className="h-5 w-5 text-primary" />
+              <Badge variant="outline">Customer Love</Badge>
+            </div>
             <h2 className="text-3xl font-bold">What Our Customers Say</h2>
             <p className="text-muted-foreground max-w-2xl mx-auto">
-              Real reviews from real women who love our lingerie.
+              Real stories from real women who've found confidence in our designs.
             </p>
           </div>
           
           <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
             {testimonials.map((testimonial) => (
-              <Card key={testimonial.id}>
+              <Card key={testimonial.id} className="h-full">
                 <CardContent className="p-6 space-y-4">
                   <div className="flex items-center gap-1">
-                    {[...Array(5)].map((_, i) => (
-                      <Star key={i} className={`h-4 w-4 ${i < testimonial.rating ? 'fill-yellow-400 text-yellow-400' : 'text-gray-300'}`} />
+                    {[...Array(testimonial.rating)].map((_, i) => (
+                      <Star key={i} className="h-4 w-4 fill-yellow-400 text-yellow-400" />
                     ))}
                   </div>
-                  <p className="text-sm italic">"{testimonial.review}"</p>
+                  <blockquote className="text-sm text-muted-foreground italic">
+                    "{testimonial.review}"
+                  </blockquote>
                   <div className="flex items-center justify-between">
                     <div>
                       <p className="font-medium text-sm">{testimonial.name}</p>
                       <p className="text-xs text-muted-foreground">{testimonial.location}</p>
                     </div>
                     {testimonial.verified && (
-                      <Badge variant="secondary" className="text-xs">Verified</Badge>
+                      <Badge variant="secondary" className="text-xs">
+                        Verified Purchase
+                      </Badge>
                     )}
                   </div>
                 </CardContent>
@@ -530,30 +486,59 @@ export default function Home() {
         </div>
       </section>
 
-      {/* Newsletter Section - Dynamic */}
-      <section className="py-16 bg-primary text-primary-foreground">
-        <div className="container mx-auto px-4 text-center">
-          <div className="space-y-6 max-w-2xl mx-auto">
-            <h2 className="text-3xl font-bold">
-              {newsletterSignup.title || 'Stay Updated'}
-            </h2>
-            <p className="text-lg opacity-90">
-              {newsletterSignup.subtitle || 'Subscribe to our newsletter and be the first to know about new arrivals and exclusive offers.'}
-            </p>
-            <div className="flex gap-2 max-w-md mx-auto">
-              <Input 
-                type="email" 
-                placeholder={newsletterSignup.placeholder || "Enter your email address"} 
-                className="bg-white text-black"
-              />
-              <Button variant="secondary">
-                {newsletterSignup.buttonText || 'Subscribe'}
-              </Button>
+      {/* Social Media Section */}
+      <section className="py-16">
+        <div className="container mx-auto px-4">
+          <div className="text-center space-y-4 mb-12">
+            <div className="flex items-center justify-center gap-2">
+              <Instagram className="h-5 w-5 text-primary" />
+              <Badge variant="outline">Follow Us</Badge>
             </div>
-            <p className="text-sm opacity-75">
-              We respect your privacy. Unsubscribe at any time.
+            <h2 className="text-3xl font-bold">Join Our Community</h2>
+            <p className="text-muted-foreground max-w-2xl mx-auto">
+              Follow us on Instagram for styling tips, behind-the-scenes content, and customer spotlights.
             </p>
           </div>
+          
+          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4 mb-8">
+            {socialImages.map((image, index) => (
+              <div key={index} className="aspect-square rounded-lg overflow-hidden group cursor-pointer">
+                <img 
+                  src={image} 
+                  alt={`Instagram post ${index + 1}`}
+                  className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300"
+                />
+              </div>
+            ))}
+          </div>
+          
+          <div className="text-center">
+            <Button size="lg" className="gap-2">
+              <Instagram className="h-4 w-4" />
+              Follow @ElegantLingerie
+            </Button>
+          </div>
+        </div>
+      </section>
+
+      {/* Newsletter */}
+      <section className="py-16 bg-gradient-to-r from-primary/5 to-purple-100/50 dark:from-primary/10 dark:to-purple-900/20">
+        <div className="container mx-auto px-4 text-center space-y-6">
+          <h2 className="text-3xl font-bold">Stay in the Loop</h2>
+          <p className="text-muted-foreground max-w-md mx-auto">
+            Be the first to know about new collections, exclusive offers, and styling tips delivered to your inbox.
+          </p>
+          <div className="flex max-w-md mx-auto gap-2">
+            <input
+              type="email"
+              placeholder="Enter your email"
+              className="flex-1 px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary bg-background"
+            />
+            <Button>Subscribe</Button>
+          </div>
+          <p className="text-xs text-muted-foreground">
+            No spam, just beautiful updates. Unsubscribe anytime.
+          </p>
         </div>
       </section>
     </div>
