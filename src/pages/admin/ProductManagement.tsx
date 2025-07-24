@@ -12,15 +12,50 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from 
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Switch } from '@/components/ui/switch';
-import { Trash2, Edit, Plus, Eye } from 'lucide-react';
+import { Trash2, Edit, Plus } from 'lucide-react';
 import { useForm } from 'react-hook-form';
 import { useToast } from '@/hooks/use-toast';
-import type { Database } from '@/integrations/supabase/types';
 
-type Product = Database['public']['Tables']['products']['Row'];
-type ProductInsert = Database['public']['Tables']['products']['Insert'];
-type ProductUpdate = Database['public']['Tables']['products']['Update'];
-type Category = Database['public']['Tables']['categories']['Row'];
+interface Product {
+  id: string;
+  title: string;
+  description?: string;
+  short_description?: string;
+  price: number;
+  sale_price?: number;
+  sku?: string;
+  stock_quantity?: number;
+  manage_stock?: boolean;
+  status: 'active' | 'inactive' | 'out_of_stock';
+  featured?: boolean;
+  category_id?: string;
+  seo_title?: string;
+  seo_description?: string;
+  slug: string;
+  created_at: string;
+  categories?: { name: string };
+}
+
+interface Category {
+  id: string;
+  name: string;
+}
+
+interface ProductFormData {
+  title: string;
+  description?: string;
+  short_description?: string;
+  price: number;
+  sale_price?: number;
+  sku?: string;
+  stock_quantity?: number;
+  manage_stock?: boolean;
+  status: 'active' | 'inactive' | 'out_of_stock';
+  featured?: boolean;
+  category_id?: string;
+  seo_title?: string;
+  seo_description?: string;
+}
 
 const ProductManagement = () => {
   const [selectedProduct, setSelectedProduct] = useState<Product | null>(null);
@@ -29,19 +64,19 @@ const ProductManagement = () => {
   const { toast } = useToast();
   const queryClient = useQueryClient();
 
-  const form = useForm<ProductInsert & ProductUpdate>({
+  const form = useForm<ProductFormData>({
     defaultValues: {
       title: '',
       description: '',
       short_description: '',
       price: 0,
-      sale_price: null,
+      sale_price: 0,
       sku: '',
       stock_quantity: 0,
       manage_stock: true,
       status: 'active',
       featured: false,
-      category_id: null,
+      category_id: '',
       seo_title: '',
       seo_description: '',
     },
@@ -78,10 +113,13 @@ const ProductManagement = () => {
 
   // Create product mutation
   const createProductMutation = useMutation({
-    mutationFn: async (productData: ProductInsert) => {
+    mutationFn: async (productData: ProductFormData) => {
       const { data, error } = await supabase
         .from('products')
-        .insert(productData)
+        .insert({
+          ...productData,
+          slug: productData.title.toLowerCase().replace(/\s+/g, '-').replace(/[^a-z0-9-]/g, '')
+        })
         .select()
         .single();
       
@@ -109,10 +147,13 @@ const ProductManagement = () => {
 
   // Update product mutation
   const updateProductMutation = useMutation({
-    mutationFn: async ({ id, ...productData }: ProductUpdate & { id: string }) => {
+    mutationFn: async ({ id, ...productData }: ProductFormData & { id: string }) => {
       const { data, error } = await supabase
         .from('products')
-        .update(productData)
+        .update({
+          ...productData,
+          slug: productData.title.toLowerCase().replace(/\s+/g, '-').replace(/[^a-z0-9-]/g, '')
+        })
         .eq('id', id)
         .select()
         .single();
@@ -167,19 +208,15 @@ const ProductManagement = () => {
     },
   });
 
-  const handleCreateProduct = (data: ProductInsert) => {
-    createProductMutation.mutate({
-      ...data,
-      slug: data.title.toLowerCase().replace(/\s+/g, '-').replace(/[^a-z0-9-]/g, ''),
-    });
+  const handleCreateProduct = (data: ProductFormData) => {
+    createProductMutation.mutate(data);
   };
 
-  const handleUpdateProduct = (data: ProductUpdate) => {
+  const handleUpdateProduct = (data: ProductFormData) => {
     if (!selectedProduct) return;
     updateProductMutation.mutate({
       ...data,
       id: selectedProduct.id,
-      slug: data.title ? data.title.toLowerCase().replace(/\s+/g, '-').replace(/[^a-z0-9-]/g, '') : selectedProduct.slug,
     });
   };
 
