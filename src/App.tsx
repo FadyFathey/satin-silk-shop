@@ -21,6 +21,7 @@ import ProductDetailsPage from "./pages/ProductDetailsPage";
 import NotFound from "./pages/NotFound";
 import ContentManagement from "./pages/admin/ContentManagement";
 import Dashboard from "./pages/admin/Dashboard";
+import ProductManagement from "./pages/admin/ProductManagement";
 import { AdminLayout } from "@/components/layout/AdminLayout";
 
 const queryClient = new QueryClient();
@@ -47,6 +48,7 @@ const App = () => (
                   <Route path="/profile" element={<Profile />} />
                   <Route path="/product/:slug" element={<ProductDetailsPage />} />
                   <Route path="/admin" element={<AdminLayout><Dashboard /></AdminLayout>} />
+                  <Route path="/admin/products" element={<AdminLayout><ProductManagement /></AdminLayout>} />
                   <Route path="/admin/content-management" element={<AdminLayout><ContentManagement /></AdminLayout>} />
                   {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
                   <Route path="*" element={<NotFound />} />

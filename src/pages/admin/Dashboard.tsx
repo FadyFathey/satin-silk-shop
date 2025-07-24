@@ -1,7 +1,8 @@
+
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { Settings, FileText, Users, BarChart3 } from 'lucide-react';
+import { Settings, FileText, Users, BarChart3, Package } from 'lucide-react';
 
 const Dashboard = () => {
   return (
@@ -14,6 +15,22 @@ const Dashboard = () => {
       </div>
 
       <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+        <Link to="/admin/products">
+          <Card className="hover:shadow-lg transition-shadow cursor-pointer">
+            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+              <CardTitle className="text-sm font-medium">
+                Product Management
+              </CardTitle>
+              <Package className="h-4 w-4 text-muted-foreground" />
+            </CardHeader>
+            <CardContent>
+              <CardDescription>
+                Manage products, inventory, and pricing
+              </CardDescription>
+            </CardContent>
+          </Card>
+        </Link>
+
         <Link to="/admin/content-management">
           <Card className="hover:shadow-lg transition-shadow cursor-pointer">
             <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
